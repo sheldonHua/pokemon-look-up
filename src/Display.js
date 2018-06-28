@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Display = (props) => {
-  const pokemon = props.pokemon
+  const { pokemon } = props
 
   let pokemonSprite
 
@@ -9,11 +9,19 @@ const Display = (props) => {
     pokemonSprite = pokemon.sprites.front_default
   }
 
+  const renderHeading = (name) => {
+    return name ? <h1>{ name }</h1> : <p>No pokemon with that name exist</p>
+  }
+
+  const renderSprite = (sprite) => {
+    return sprite && <img src={sprite} alt="pokemon" />
+  }
+
   return (
     <div>
       <figure>
-        <h1>{ pokemon.name }</h1>
-        <img src={ pokemonSprite } alt="Pokemon" />
+     
+        { renderSprite(pokemonSprite) }
       </figure>
       
     </div>

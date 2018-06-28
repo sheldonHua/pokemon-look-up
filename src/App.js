@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import './App.css';
 import Display from './Display'
+import Search from './Search'
 
 class App extends Component {
   state = {
     pokemon: {},
-    searchName: 'pikachu'
+    searchName: 'pikachu',
   }
 
   findPokemon = (name) => {
-    console.log(name);
     fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
     .then(res => res.json())
     .then(data => {
@@ -38,13 +38,17 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">          
-        </header>
-        <Display pokemon={this.state.pokemon} />
-        <form onSubmit={this.searchSubmit}>
-          <input type="text" onChange={this.searchName} />
-          <button>Search</button>
-        </form>
+        <div id="gameboy">
+        <div id="screen">
+          <Display pokemon={this.state.pokemon} errorMessage={this.state.errorMessage} />
+        </div>
+        <div id="dpad"></div>
+        <div id="bevel"></div>
+        <div id="bt1"></div>
+        <div id="bt2"></div>
+        
+        </div>
+        <Search submit={this.searchSubmit} searchName={this.searchName} />
       </div>
     );
   }
