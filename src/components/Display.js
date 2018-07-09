@@ -9,10 +9,6 @@ const Display = (props) => {
     pokemonSprite = pokemon.sprites.front_default
   }
 
-  const renderHeading = (name) => {
-    return name ? <h1>{ name }</h1> : <p>No pokemon with that name exist</p>
-  }
-
   const renderSprite = (sprite) => {
     return sprite && <img src={sprite} alt="pokemon" />
   }
@@ -20,7 +16,6 @@ const Display = (props) => {
   return (
     <div>
       <figure>
-     
         { renderSprite(pokemonSprite) }
       </figure>
       

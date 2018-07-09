@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { itemsFetchData } from './actions/'
+
 import './App.css';
-import Display from './Display'
-import Search from './Search'
+import Display from './components/Display'
+import Search from './components/Search'
 
 class App extends Component {
   state = {
@@ -10,14 +13,7 @@ class App extends Component {
   }
 
   findPokemon = (name) => {
-    fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    .then(res => res.json())
-    .then(data => {
-      this.setState({
-        pokemon: data
-      })
-    })
-    .catch(err => console.log(err));
+    this.props.fetchData(`https://pokeapi.co/api/v2/pokemon/${name}`)
   }
 
   searchSubmit = (e) => {
@@ -33,6 +29,7 @@ class App extends Component {
 
   componentDidMount() {
     this.findPokemon(this.state.searchName);
+    this.props.fetchData(`https://pokeapi.co/api/v2/pokemon/${this.state.searchName}`)
   }
 
   render() {
@@ -40,7 +37,7 @@ class App extends Component {
       <div className="App">
         <div id="gameboy">
         <div id="screen">
-          <Display pokemon={this.state.pokemon} errorMessage={this.state.errorMessage} />
+            <Display pokemon={this.props.items} errorMessage={this.state.errorMessage} />
         </div>
         <div id="dpad"></div>
         <div id="bevel"></div>
@@ -54,4 +51,13 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  items: state.items
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchData: (url) => dispatch(itemsFetchData(url))
+})
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
