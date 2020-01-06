@@ -35,6 +35,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <header>
+          <h1 className="header-title">Pokemon Look-up</h1>
+        </header>
         <div id="gameboy">
         <div id="screen">
             <Display pokemon={this.props.items} errorMessage={this.state.errorMessage} />

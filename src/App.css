@@ -2,6 +2,14 @@ body{
     background: #009999;
 }
 
+.App {
+  padding: 1rem 0;
+}
+
+.header-title {
+  text-align: center;
+}
+
 figure {
     text-align:center;
 }
@@ -20,7 +28,7 @@ form {
 
 #gameboy{
   position: relative;
-  margin: 100px auto;
+  margin: 50px auto;
   height: 500px;
   width: 300px;
   background: #EEE;
