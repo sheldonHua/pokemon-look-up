@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { itemsFetchData } from './actions/'
+import { pokemonApi } from './config/constants'
 
 import './App.css';
 import Display from './components/Display'
@@ -9,16 +8,13 @@ import Search from './components/Search'
 class App extends Component {
   state = {
     pokemon: {},
+    list: [],
     searchName: 'pikachu',
-  }
-
-  findPokemon = (name) => {
-    this.props.fetchData(`https://pokeapi.co/api/v2/pokemon/${name}`)
   }
 
   searchSubmit = (e) => {
     e.preventDefault();
-    this.findPokemon(this.state.searchName)
+    this.fetchPokemon(this.state.searchName)
   }
 
   searchName = (e) => {
@@ -27,9 +23,28 @@ class App extends Component {
     })
   }
 
+  fetchPokemon = (name) => {
+    const url = name !== undefined ? pokemonApi + `/${name}` : pokemonApi + '?limit=151'
+    fetch(url)
+    .then((response) => {
+      return response.json()
+    })
+    .then((response) => {
+      if (name) {
+        this.setState({
+          pokemon: response
+        })
+      } else {
+        this.setState({
+          list: response
+        })
+      }
+    })
+  }
+
   componentDidMount() {
-    this.findPokemon(this.state.searchName);
-    this.props.fetchData(`https://pokeapi.co/api/v2/pokemon/${this.state.searchName}`)
+    this.fetchPokemon()
+    this.fetchPokemon(this.state.searchName)
   }
 
   render() {
@@ -40,13 +55,12 @@ class App extends Component {
         </header>
         <div id="gameboy">
         <div id="screen">
-            <Display pokemon={this.props.items} errorMessage={this.state.errorMessage} />
+            <Display pokemon={this.state.pokemon} errorMessage={this.state.errorMessage} />
         </div>
         <div id="dpad"></div>
         <div id="bevel"></div>
         <div id="bt1"></div>
         <div id="bt2"></div>
-        
         </div>
         <Search submit={this.searchSubmit} searchName={this.searchName} />
       </div>
@@ -54,13 +68,4 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  items: state.items
-})
-
-const mapDispatchToProps = dispatch => ({
-  fetchData: (url) => dispatch(itemsFetchData(url))
-})
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App
