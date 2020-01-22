@@ -23,13 +23,10 @@ class App extends Component {
     })
   }
 
-  fetchPokemon = (name) => {
+  fetchPokemon = async (name) => {
     const url = name !== undefined ? pokemonApi + `/${name}` : pokemonApi + '?limit=151'
-    fetch(url)
-    .then((response) => {
-      return response.json()
-    })
-    .then((response) => {
+    try {
+      const response = await (await fetch(url)).json()
       if (name) {
         this.setState({
           pokemon: response
@@ -39,7 +36,9 @@ class App extends Component {
           list: response
         })
       }
-    })
+    } catch(err) {
+      console.log(err)
+    }
   }
 
   componentDidMount() {
